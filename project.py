@@ -20,11 +20,9 @@ class ELexer:
 
     def get_next_token(self):
         while self.position < len(self.input) and self.input[self.position].isspace():
-            # Skip whitespace
             self.position += 1
 
         if self.position >= len(self.input):
-            # End of file
             return Token(TokenType.END_OF_FILE)
 
         current_char = self.input[self.position]
@@ -41,14 +39,12 @@ class ELexer:
             self.position += 1
             return Token(TokenType.DIVIDE)
         elif current_char.isdigit():
-            # Parse NUMBER
             value = 0
             while self.position < len(self.input) and self.input[self.position].isdigit():
                 value = value * 10 + int(self.input[self.position])
                 self.position += 1
             return Token(TokenType.NUMBER, value)
         else:
-            # Invalid character
             raise ValueError(f"Error: Invalid character '{current_char}'")
 
 class ExpressionParseException(Exception):
@@ -60,7 +56,7 @@ class ExpressionParser:
         self.current_token = lexer.get_next_token()
 
     def parse_expression(self):
-        result = self.parse_term()  # Parse the first term in the expression
+        result = self.parse_term()  
 
         while self.current_token.type in (TokenType.ADDITION, TokenType.SUBTRACT):
             op = self.current_token
